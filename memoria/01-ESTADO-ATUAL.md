@@ -3,15 +3,15 @@
 > **Retrato do agora, não histórico.** Este arquivo é SOBRESCRITO a cada `/checkpoint`.
 > Máximo de 80 linhas. Histórico vive em `diario/`.
 
-**Última atualização:** 2026-08-06 — `/checkpoint`
-**Fase atual do POP:** 1 — Fundação & Setup
-**Status:** **concluída e verificada**, aguardando aprovação para a Fase 2
+**Última atualização:** 2026-08-06 — sandbox `/design-system` criado
+**Fase atual do POP:** 2 — Componentização Base
+**Status:** sandbox operacional, aguardando criação dos primitivos
 
 ## Onde paramos (2 a 4 linhas)
-Arquitetura Next.js 15 de pé em `frontend/`, com Tailwind v4 CSS-first e o `DESIGN.md` inteiro
-tokenizado no `@theme` de `globals.css`. Tipografia definitiva no ar: Riope self-hospedada
-(`next/font/local`) + Montserrat, com Quicksand só como elo de fallback. Critério de aceite da
-Fase 1 rodado e aprovado. Nenhum componente criado ainda — a Fase 2 começa do zero.
+Sandbox interno da Biblioteca de Componentes no ar em `/design-system` (noindex). Layout server
+(`layout.jsx`) + painel client (`page.jsx`) com sidebar (busca + categorias), header dinâmico e
+empty state. Build passa limpo (`○ /design-system` estática). Nenhum primitivo em `src/components/ui/`
+ainda — a próxima tarefa é criar o `<Button />` e injetá-lo no painel.
 
 ## Concluído até aqui
 - [x] Fase 1 — Fundação & Setup
@@ -45,14 +45,12 @@ Fase 1 rodado e aprovado. Nenhum componente criado ainda — a Fase 2 começa do
 | `studio/` | vazia por design — Sanity só na Fase 5 |
 
 ## Estado técnico (verificado no checkpoint)
-- `npm run build`: **passa** — `/` e `/_not-found` como rotas estáticas (○); `npm run lint` limpo
-- `curl -s http://localhost:3000 | grep "<h1"`: **retorna o H1** com o texto no HTML do servidor
-- `@font-face` do Riope emitido com `font-weight: 400` e `font-display: swap`; arquivo servido em
-  `/_next/static/media` com SHA-256 idêntico ao original
-- Componentes client no projeto: **nenhum** (100% Server Components)
-- CSS compilado: utilitários dos tokens confirmados (`bg-primary`, `text-eyebrow`, `py-section`,
-  `shadow-halo-primary`, `max-w-content`, as 7 verticais)
-- `git status`: só arquivos legítimos; nenhuma credencial nos arquivos versionados
+- `npm run build`: **passa** — `/`, `/_not-found` e `/design-system` como rotas estáticas (○)
+- `/design-system` responde HTTP 200 com `<meta name="robots" content="noindex, nofollow">`
+- Sidebar com busca, 5 categorias, troca de categoria e empty state funcionando
+- Componentes client no projeto: **1** — `src/app/design-system/page.jsx` (exceção justificada:
+  ferramenta interna com estado de UI)
+- Nenhum primitivo em `src/components/ui/` ainda
 
 ## Bloqueios (dependem do cliente ou de mim)
 - **Licença de webfont do Riope** (Envato Elements): bloqueio de **deploy**, não de desenvolvimento.
@@ -61,4 +59,4 @@ Fase 1 rodado e aprovado. Nenhum componente criado ainda — a Fase 2 começa do
 - **Assets de marca:** logo (SVG), `pattern-ondas.svg`, fotos de hero/galeria e og-image.
 - **Mobile/tablet:** o `DESIGN.md` marca os breakpoints como inferência não validada — precisa de
   aprovação antes de virar especificação.
-- **Fase 2 precisa do arquivo de referência `ComponentLibrary.jsx`** para começar.
+- ~~Fase 2 precisa do arquivo de referência~~ — sandbox criado do zero, sem referência externa.

@@ -4,17 +4,15 @@
 
 ## ▶️ PRÓXIMO PASSO EXATO
 **Fase:** 2 — Componentização Base
-**Tarefa:** criar a Biblioteca de Componentes em `/design-system` (sandbox interno, `noindex`)
-**Arquivo(s) alvo:** `frontend/src/app/design-system/page.jsx` (client, exceção justificada) e
-`frontend/src/app/design-system/layout.jsx` (server, com `robots: { index: false, follow: false }`)
-**Prompt a usar:** POP.md → Prompt Mestre #2
-**Pré-requisito:** enviar o arquivo de referência `ComponentLibrary.jsx` junto com o prompt
-**Fase 1:** concluída e verificada em 2026-08-06 (critério de aceite do Anexo C aprovado)
+**Tarefa:** criar o primitivo `<Button />` com as 6 variantes do DS (primary, primary-halo,
+secondary, soft, warm, vertical) e injetar preview na `/design-system`
+**Arquivo(s) alvo:** `frontend/src/components/ui/button.jsx` + atualizar `page.jsx` da biblioteca
+**Pré-requisito:** nenhum — sandbox já operacional
 
 ---
 
 ## Fila da fase atual (Fase 2)
-- [ ] Sandbox `/design-system` com sidebar, busca, `CodeBlock` e `LibraryComponentItem`
+- [x] Sandbox `/design-system` com sidebar, busca, `CodeBlock` e `LibraryComponentItem`
 - [ ] `<Button />` — variantes `primary`, `primary-halo`, `secondary`, `soft`, `warm`, `vertical`
 - [ ] `<Eyebrow />` (uppercase, tracking 1.4px, `secondary-dark` / `secondary` sobre escuro)
 - [ ] `<CheckItem />` e a dupla `<SpecRow />` / `<SpecLabel />`
