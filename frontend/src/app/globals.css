@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Aqua Slides — Design Tokens
+   Fonte da verdade: DESIGN.md (raiz do repositório). Nenhum valor aqui é
+   inventado: cada token abaixo tem correspondência direta no DESIGN.md.
+   `static` garante que todas as variáveis sejam emitidas em :root, inclusive
+   as das 7 verticais, que são consumidas em runtime via `--vertical`.
+   ========================================================================== */
+@theme static {
+  /* --- Marca --- */
+  --color-primary: #09aae0;
+  --color-primary-dark: #0a88b2;
+  --color-primary-tint: #e3f5fc;
+  --color-secondary: #facc01;
+  --color-secondary-dark: #fea02e;
+  --color-secondary-tint: #fff8e0;
+
+  /* --- Verticais (linhas de produto) --- */
+  --color-ball: #ff443b;
+  --color-ball-dark: #c9352e;
+  --color-fresh: #1384ec;
+  --color-fresh-dark: #116bbe;
+  --color-ramp: #7c62ff;
+  --color-ramp-dark: #5642bc;
+  --color-free-fall: #01b2bc;
+  --color-free-fall-dark: #00858d;
+  --color-playground: #2cc05e;
+  --color-playground-dark: #1e8c43;
+  --color-toboagua: #0f2cd8;
+  --color-toboagua-dark: #0a1f9c;
+  --color-complexos: #f99e0d;
+  --color-complexos-dark: #a96c0b;
+
+  /* --- Superfície --- */
+  --color-canvas: #f8f8f8;
+  --color-surface: #f2f2f2;
+  --color-surface-strong: #e6e6e6;
+  --color-surface-white: #ffffff;
+  --color-surface-warm: #fff5ea;
+
+  /* --- Texto --- */
+  --color-ink: #3d3d3d;
+  --color-body: #4d4d4d;
+  --color-muted: #6c6c6c;
+
+  /* --- Hairlines --- */
+  --color-hairline: #e5e5e5;
+  --color-hairline-soft: #ebebeb;
+
+  /* --- Semântica (derivada da paleta de verticais) --- */
+  --color-destructive: #ff443b;
+  --color-success: #2cc05e;
+  --color-warning: #f99e0d;
+
+  /* --- On-surface --- */
+  --color-on-primary: #ffffff;
+  --color-on-secondary: #3d3d3d;
+  --color-on-dark: #ffffff;
+
+  /* --- Famílias tipográficas (variáveis geradas pelo next/font) ---
+     Riope é self-hospedada (next/font/local, peso único 400). Quicksand entra
+     logo depois, como fallback da janela de carregamento e do caso de falha do
+     arquivo — é o que o DESIGN.md determina. Nunca use Quicksand como
+     alternativa deliberada ao Riope. */
+  --font-display: var(--font-riope, var(--font-quicksand)), var(--font-quicksand),
+    "Trebuchet MS", sans-serif;
+  --font-sans: var(--font-montserrat), -apple-system, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+
+  /* --- Escala tipográfica desktop ---
+     `--text-base` = typography.body do DESIGN.md (16px/1.6). Nomeado assim
+     para não colidir com o utilitário de cor `text-body`.
+     typography.muted = `text-small text-muted` (mesma métrica de `small`). */
+  --text-h1: 64px;
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.5px;
+  --text-h1--font-weight: 400;
+
+  --text-h2: 48px;
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.25px;
+  --text-h2--font-weight: 400;
+
+  --text-h3: 32px;
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: 0;
+  --text-h3--font-weight: 400;
+
+  --text-card-h: 24px;
+  --text-card-h--line-height: 1.25;
+  --text-card-h--letter-spacing: 0;
+  --text-card-h--font-weight: 700;
+
+  --text-lead: 20px;
+  --text-lead--line-height: 1.5;
+  --text-lead--letter-spacing: 0;
+  --text-lead--font-weight: 400;
+
+  --text-p: 18px;
+  --text-p--line-height: 1.6;
+  --text-p--letter-spacing: 0;
+  --text-p--font-weight: 400;
+
+  --text-base: 16px;
+  --text-base--line-height: 1.6;
+  --text-base--letter-spacing: 0;
+  --text-base--font-weight: 400;
+
+  --text-card-p: 16px;
+  --text-card-p--line-height: 1.5;
+  --text-card-p--letter-spacing: 0;
+  --text-card-p--font-weight: 400;
+
+  --text-small: 14px;
+  --text-small--line-height: 1.5;
+  --text-small--letter-spacing: 0;
+  --text-small--font-weight: 400;
+
+  --text-blockquote: 20px;
+  --text-blockquote--line-height: 1.6;
+  --text-blockquote--letter-spacing: 0;
+  --text-blockquote--font-weight: 400;
+
+  --text-inline-code: 14px;
+  --text-inline-code--line-height: 1.5;
+  --text-inline-code--letter-spacing: 0;
+  --text-inline-code--font-weight: 400;
+
+  --text-button-md: 16px;
+  --text-button-md--line-height: 1.2;
+  --text-button-md--letter-spacing: 0;
+  --text-button-md--font-weight: 700;
+
+  --text-button-sm: 14px;
+  --text-button-sm--line-height: 1.2;
+  --text-button-sm--letter-spacing: 0;
+  --text-button-sm--font-weight: 700;
+
+  --text-nav-link: 14px;
+  --text-nav-link--line-height: 1.2;
+  --text-nav-link--letter-spacing: 0;
+  --text-nav-link--font-weight: 600;
+
+  --text-eyebrow: 14px;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 1.4px;
+  --text-eyebrow--font-weight: 700;
+
+  --text-spec-label: 12px;
+  --text-spec-label--line-height: 1.2;
+  --text-spec-label--letter-spacing: 1px;
+  --text-spec-label--font-weight: 700;
+
+  /* --- Escala tipográfica mobile (typography-mobile — dado real do Figma) --- */
+  --text-h1-mobile: 40px;
+  --text-h1-mobile--line-height: 1.15;
+  --text-h1-mobile--letter-spacing: -0.5px;
+  --text-h1-mobile--font-weight: 400;
+
+  --text-h2-mobile: 32px;
+  --text-h2-mobile--line-height: 1.2;
+  --text-h2-mobile--letter-spacing: -0.25px;
+  --text-h2-mobile--font-weight: 400;
+
+  --text-h3-mobile: 24px;
+  --text-h3-mobile--line-height: 1.25;
+  --text-h3-mobile--letter-spacing: 0;
+  --text-h3-mobile--font-weight: 400;
+
+  --text-p-mobile: 16px;
+  --text-p-mobile--line-height: 1.6;
+  --text-p-mobile--letter-spacing: 0;
+  --text-p-mobile--font-weight: 400;
+
+  --text-card-p-mobile: 14px;
+  --text-card-p-mobile--line-height: 1.5;
+  --text-card-p-mobile--letter-spacing: 0;
+  --text-card-p-mobile--font-weight: 400;
+
+  /* --- Radius --- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* --- Spacing nomeado --- */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-base: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  --spacing-block: 64px;
+  --spacing-section: 96px;
+
+  /* --- Container (Layout → grid: 1400px centrado) --- */
+  --container-content: 1400px;
+
+  /* --- Efeitos: o sistema não usa elevação, usa halo (contorno) ---
+     `--vertical` é injetado no escopo da página de vertical
+     (ex.: style={{ "--vertical": "var(--color-toboagua)" }}). */
+  --shadow-halo-primary: 0 0 0 6px var(--color-primary-tint);
+  --shadow-halo-secondary: 0 0 0 6px var(--color-secondary-tint);
+  --shadow-halo-vertical: 0 0 0 6px
+    color-mix(in srgb, var(--vertical, var(--color-primary)) 18%, white);
+  --shadow-focus-ring: var(--shadow-halo-secondary);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-none shadow-focus-ring;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
