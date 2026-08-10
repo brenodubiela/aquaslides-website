@@ -207,6 +207,22 @@
   --shadow-halo-vertical: 0 0 0 6px
     color-mix(in srgb, var(--vertical, var(--color-primary)) 18%, white);
   --shadow-focus-ring: var(--shadow-halo-secondary);
+
+  /* --- Animação ---
+     Só opacidade: o DS não descreve movimento, e um fade curto não dispara
+     desconforto vestibular como translate/scale disparariam. Substitui o
+     `animate-in`/`fade-in-80` do plugin `tailwindcss-animate`, que não está
+     (nem precisa estar) instalado. */
+  --animate-fade-in: fade-in 150ms ease-out;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 @layer base {
@@ -227,4 +243,16 @@
       scroll-behavior: auto;
     }
   }
+}
+
+/* Colisão de nomes: o token `--spacing-block` (spacing.block do DESIGN.md) faz o
+   Tailwind gerar a utility funcional `inline-<spacing>` → `.inline-block {
+   inline-size: 64px }`, que tem exatamente o mesmo nome da utility estática de
+   display. As duas se aplicam juntas, e todo elemento com `inline-block` acaba
+   travado em 64px de largura — o conteúdo transborda e se sobrepõe ao vizinho.
+   A regra abaixo fica FORA de qualquer @layer: CSS sem camada sempre vence CSS
+   em camada, independentemente da ordem de emissão do Tailwind.
+   Para a medida de 64px use `w-block` / `p-block`, que não são ambíguos. */
+.inline-block {
+  inline-size: auto;
 }

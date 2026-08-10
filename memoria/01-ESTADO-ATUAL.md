@@ -3,19 +3,19 @@
 > **Retrato do agora, não histórico.** Este arquivo é SOBRESCRITO a cada `/checkpoint`.
 > Máximo de 80 linhas. Histórico vive em `diario/`.
 
-**Última atualização:** 2026-08-06 — sandbox `/design-system` criado
+**Última atualização:** 2026-08-10 — Fase 2 concluída
 **Fase atual do POP:** 2 — Componentização Base
-**Status:** sandbox operacional, aguardando criação dos primitivos
+**Status:** **concluída**, liberada para a Fase 3
 
 ## Onde paramos (2 a 4 linhas)
-Sandbox interno da Biblioteca de Componentes no ar em `/design-system` (noindex). Layout server
-(`layout.jsx`) + painel client (`page.jsx`) com sidebar (busca + categorias), header dinâmico e
-empty state. Build passa limpo (`○ /design-system` estática). Nenhum primitivo em `src/components/ui/`
-ainda — a próxima tarefa é criar o `<Button />` e injetá-lo no painel.
+**Fase 2 fechada:** 26 primitivos em `src/components/ui/`, todos injetados no Sandbox
+`/design-system`, que abre as 8 categorias sem erro. O dia foi de correção — quatro defeitos com a
+mesma raiz (*classe que não existe ou que significa outra coisa*) e o `<ProjectMap />` alinhado ao
+`map-project-panel`. Próxima parada é a Fase 3, que traz Header, Footer e as rotas reais.
 
 ## Concluído até aqui
 - [x] Fase 1 — Fundação & Setup
-- [ ] Fase 2 — Componentização Base
+- [x] Fase 2 — Componentização Base — 26 primitivos + Sandbox `/design-system`
 - [ ] Fase 3 — Rotas, Layouts & SEO
 - [ ] Fase 4 — Módulos Legais & LGPD
 - [ ] Fase 5 — Sanity (blog no escopo)
@@ -24,39 +24,39 @@ ainda — a próxima tarefa é criar o `<Button />` e injetá-lo no painel.
 - [ ] Fase 8 — Deploy & Handover
 
 ## O que existe hoje
-- Next.js **15.5.23** (App Router, JS/JSX, `src/`, alias `@/*`, Turbopack) + React 19.1.0
-- Tailwind CSS **4.3.3** via `@tailwindcss/postcss` (sem `tailwind.config.js`, sem `autoprefixer`)
-- `motion` ^13, `lucide-react` ^1.29, `clsx` ^2.1.1, `tailwind-merge` ^3.6
-- Fontes: **Riope 400** self-hospedada (`public/fonts/Riope.woff2`), Montserrat 400/600/700 e
-  Quicksand 400 (fallback) — todas por `next/font`, zero request externo
-- Rotas: `/` (smoke test de tokens) e a 404 (`not-found.jsx`, com `noindex`)
-- `globals.css` com todo o DS: marca, 7 verticais, superfícies, texto, hairlines, semântica,
-  16 estilos tipográficos + 5 mobile, radius, spacing nomeado, halos e focus ring
-- `src/utils/cn.js` (`clsx` + `tailwind-merge` estendido com as escalas do DS)
-- Git iniciado em `main`, `.gitignore` único na raiz, `.agents/` fora via `.git/info/exclude`
+- Next.js **15.5.23** + React 19.1.0, Tailwind **4.3.3** (CSS-first, `@theme static`)
+- Deps: `motion`, `lucide-react`, `clsx`, `tailwind-merge`, `react-hook-form`, `react-simple-maps`
+- Fontes: Riope 400 self-hospedada + Montserrat; Quicksand só na cadeia de fallback
+- Rotas: `/` (smoke test), `/design-system` (Sandbox, `noindex`), 404
+- **26 primitivos** em `src/components/ui/` — 21 Server, **5 Client** (`accordion`,
+  `button-dropdown`, `contact-form`, `nav-menu`, `project-map`) + a página do Sandbox.
+  Inventário completo em `04-COMPONENTES.md`
+- `src/components/layout/`, `sections/`, `data/` e `lib/` ainda vazios — `layout/` recebe
+  Header e Footer na Fase 3
 
 ## Arquivos pela metade / abertos
 | Arquivo | O que falta |
 |---|---|
-| `frontend/next.config.mjs` | `images.remotePatterns` recebe `cdn.sanity.io` na Fase 6 |
-| `frontend/src/app/page.jsx` | é smoke test de tokens; vira Home real na Fase 3 |
-| `frontend/public/fonts/Riope.woff` | veio com **0 bytes**; fora do `@font-face` (só a `.woff2` está mapeada) |
-| `frontend/public/` | favicon, og-image e `pattern-ondas.svg` (assets do cliente) |
+| `frontend/next.config.mjs` | `cdn.sanity.io` nos `remotePatterns` na Fase 6 |
+| `frontend/src/app/page.jsx` | ainda é o smoke test; vira Home real na Fase 3 |
+| `frontend/public/fonts/Riope.woff` | 0 bytes; fora do `@font-face` |
+| `frontend/public/` | favicon, og-image e `pattern-ondas.svg` |
 | `studio/` | vazia por design — Sanity só na Fase 5 |
 
 ## Estado técnico (verificado no checkpoint)
-- `npm run build`: **passa** — `/`, `/_not-found` e `/design-system` como rotas estáticas (○)
-- `/design-system` responde HTTP 200 com `<meta name="robots" content="noindex, nofollow">`
-- Sidebar com busca, 5 categorias, troca de categoria e empty state funcionando
-- Componentes client no projeto: **1** — `src/app/design-system/page.jsx` (exceção justificada:
-  ferramenta interna com estado de UI)
-- Nenhum primitivo em `src/components/ui/` ainda
+- `npm run build`: **passa** — `/`, `/_not-found` e `/design-system` estáticas (○)
+- `/design-system`: HTTP 200 com `<meta name="robots" content="noindex, nofollow">`
+- `/`: HTTP 200 com o H1 no HTML do servidor
+- **Auditoria de classes: zero classes inválidas** (355 analisadas). Comando no diário 2026-08-10
+- `git status`: 44 arquivos pendentes de commit; `.agents/` fora via `.git/info/exclude`
+- ❌ `npm run lint` **quebrado**: `eslint-config-next` carrega o parser de TypeScript e o
+  projeto é JS puro sem `typescript` instalado. Some com `npm i -D typescript` — **precisa da sua
+  autorização** (AGENTS.md §3)
 
 ## Bloqueios (dependem do cliente ou de mim)
-- **Licença de webfont do Riope** (Envato Elements): bloqueio de **deploy**, não de desenvolvimento.
-- **`Riope.woff` válida** — a entregue tem 0 bytes (impacto residual: WOFF2 já cobre os navegadores).
-- **E-mail institucional** para o formulário de contato (Fase 7) — ainda "a definir".
-- **Assets de marca:** logo (SVG), `pattern-ondas.svg`, fotos de hero/galeria e og-image.
-- **Mobile/tablet:** o `DESIGN.md` marca os breakpoints como inferência não validada — precisa de
-  aprovação antes de virar especificação.
-- ~~Fase 2 precisa do arquivo de referência~~ — sandbox criado do zero, sem referência externa.
+- **Autorizar `typescript` como devDependency** para destravar o lint.
+- **Licença de webfont do Riope** (Envato): bloqueio de deploy, não de desenvolvimento.
+- **E-mail institucional** do formulário (Fase 7) e **assets de marca** (logo SVG,
+  `pattern-ondas.svg`, fotos, og-image).
+- **Mobile/tablet:** breakpoints do `DESIGN.md` são inferência não validada.
+- `react-simple-maps@3` declara peer deps de React 16/17/18 — roda no 19 sem suporte oficial.

@@ -227,30 +227,265 @@ components:
     linkColor: "{colors.on-primary}"
     linkActiveColor: "{colors.secondary}"
   nav-link:
-    typography: "{typography.nav-link}"
-    color: "{colors.ink}"
-    activeColor: "{colors.secondary-dark}"
+    description: "Link de Navegação Textual (Nós 20509:180 e 20509:181 do Figma)"
+    typography: "font-sans font-bold text-button-md" # 16px bold Montserrat
+    color: "{colors.ink}" # #3d3d3d
+    hoverColor: "{colors.secondary}" # #facc01
+    activeColor: "{colors.secondary}" # #facc01
+    transition: "transition-colors duration-200"
+  eyebrow-hatch:
+    description: "Chapéu / Indicador de Seção (Nó 20509:188 do Figma)"
+    typography: "{typography.eyebrow}" # 14px bold Montserrat uppercase tracking-[1.4px]
+    variants:
+      default: "{colors.secondary}" # #facc01 (Amarelo)
+      dark: "{colors.secondary-dark}" # #fea02e (Laranja)
+    hoverAnimation: "hover:tracking-[2.5px] hover:translate-x-1 transition-all duration-300 ease-out"
+  dropdown-menu:
+    description: "Menu Suspenso Flutuante de Navegação (Nó 20509:182 do Figma)"
+    trigger:
+      typography: "{typography.nav-link}"
+      color: "{colors.ink}"
+      hoverColor: "{colors.secondary}"
+      icon: "ChevronDown (16px, rotate-180 no group-hover)"
+    floatingMenu:
+      backgroundColor: "{colors.canvas}" # #f8f8f8
+      border: "1px solid {colors.hairline}" # #e5e5e5
+      borderRadius: "{rounded.md}" # 12px
+      boxShadow: "shadow-md"
+      padding: "{spacing.sm}" # 8px
+      minWidth: "200px"
+    menuItems:
+      paddingY: "{spacing.sm}"
+      paddingX: "{spacing.base}"
+      color: "{colors.ink}"
+      hoverBackgroundColor: "{colors.surface-strong}"
+      hoverColor: "{colors.secondary-dark}"
+  nav-menu:
+    description: "Barra de Navegação Principal com 2 estados (Nós 20509:120 e 20108:106 do Figma)"
+    position: "fixed top-0 z-50"
+    padding: "px-xl py-md"
+    transition: "transition-all duration-300"
+    states:
+      normal:
+        background: "transparent"
+        linkColor: "{colors.ink}"
+        activeLinkColor: "{colors.secondary}"
+        ctaVariant: "primary" # botão azul
+      scrolled:
+        background: "{colors.primary}"
+        shadow: "shadow-md"
+        linkColor: "{colors.canvas}" # branco
+        activeLinkColor: "{colors.secondary}"
+        ctaVariant: "secondary" # botão amarelo
+    logoSlot: "112×54px, reservado para SVG institucional"
+  client-logo-card:
+    description: "Card de Exibição de Logo de Cliente (Nó 20509:215 do Figma)"
+    container:
+      width: "w-[269px]" # 268.8px no Figma
+      height: "h-[109px]"
+      backgroundColor: "{colors.surface-strong}" # #e6e6e6
+      borderRadius: "{rounded.md}" # 12px
+      padding: "{spacing.base}" # p-4
+      layout: "relative flex items-center justify-center overflow-hidden"
+    image:
+      behavior: "object-contain" # Mantém proporção da logo sem distorcer
+  blog-card:
+    description: "Card de Blog com Variações (Nó 20509:726 do Figma)"
+    variants:
+      vertical: "Destaque (Imagem no topo, flex-col)"
+      horizontal: "Lista (Imagem na lateral esquerda, flex-row)"
+    image:
+      behavior: "object-cover"
+      borderRadius: "rounded-[30px]"
+    title:
+      typography: "font-sans font-bold"
+      verticalSize: "text-[32px] lg:text-4xl tracking-[-1.6px] leading-[1.2]"
+      horizontalSize: "text-2xl tracking-[-1px] leading-[1.2]"
+      color: "{colors.ink}"
+    excerpt:
+      typography: "font-sans text-base tracking-[-0.8px]"
+      color: "{colors.ink}/80"
+    button:
+      variant: "warm"
+  accordion:
+    description: "Componente de FAQ / Accordion (Nó 20509:467 do Figma)"
+    container:
+      gap: "gap-4"
+    item:
+      padding: "p-6"
+      borderRadius: "{rounded.md}" # 12px
+      backgroundColor: "bg-surface-muted/80 backdrop-blur-sm"
+      border: "border border-primary/20"
+      activeBorder: "border-primary/60"
+    question:
+      typography: "font-sans font-bold text-lg"
+      color: "{colors.ink}"
+      activeColor: "{colors.primary}"
+    answer:
+      typography: "font-sans text-base tracking-[-0.8px]"
+      color: "{colors.ink}"
+  info-card:
+    description: "Card Simples de Informação (Nó 20509:582 do Figma)"
+    container:
+      backgroundColor: "bg-[#f2f2f2]"
+      borderRadius: "rounded-2xl" # 15px
+      padding: "p-6"
+    title:
+      typography: "font-riope text-[32px] leading-none"
+      color: "{colors.primary}"
+    content:
+      typography: "font-sans text-base tracking-[-0.8px] leading-[1.2]"
+      color: "{colors.ink}"
+  value-card:
+    description: "Card Institucional (Missão, Visão, Valores) (Nó 20509:499 do Figma)"
+    container:
+      backgroundColor: "bg-[#f2f2f2]" # Próximo a bg-surface-muted
+      borderRadius: "rounded-2xl" # 15px
+      padding: "px-6 py-8"
+      layout: "flex flex-col gap-14 h-full"
+    iconBox:
+      backgroundColor: "bg-secondary"
+      borderRadius: "rounded-2xl"
+      padding: "p-4" # ícone fica com 24px, container total de 56px
+      color: "{colors.ink}"
+    eyebrow:
+      typography: "font-sans font-bold text-sm tracking-[1.4px] uppercase"
+      color: "{colors.secondary}"
+    title:
+      typography: "font-riope text-2xl xl:text-[28px] leading-[1.2] truncate"
+      color: "{colors.primary}"
+    content:
+      typography: "font-sans text-base tracking-[-0.8px] leading-[1.2]"
+      color: "{colors.ink}"
+  forms:
+    description: "Elementos de Formulário (Nó 20509:639 do Figma)"
+    label:
+      typography: "font-sans font-light text-lg tracking-tight"
+      color: "{colors.ink}"
+    input:
+      height: "h-[60px]"
+      borderRadius: "rounded-full" # 100px
+      border: "border border-hairline"
+      focus: "focus:bg-secondary/10 focus:border-secondary/30 focus:outline-none focus:ring-1 focus:ring-secondary/30"
+      padding: "px-6"
+    error:
+      typography: "font-sans text-sm text-red-500"
+    description: "Card de Artigo para Blog/Posts (Nó 20509:438 do Figma)"
+    layout: "flex flex-col h-full justify-between"
+    image:
+      aspectRatio: "aspect-[4/3] ou altura fixa (ex: h-[378px])"
+      behavior: "object-cover"
+      borderRadius: "rounded-[30px]"
+    title:
+      typography: "font-sans font-bold text-2xl tracking-[-1px] leading-[1.2]"
+      color: "{colors.ink}"
+    excerpt:
+      typography: "font-sans text-base tracking-[-0.8px]"
+      color: "{colors.ink}/80"
+    button:
+      variant: "warm"
   button-primary:
-    backgroundColor: "{colors.primary}"
-    color: "{colors.on-primary}"
-    typography: "{typography.button-md}"
-    borderRadius: "{rounded.full}"
-    paddingY: "{spacing.md}"
-    paddingX: "{spacing.lg}"
-    height: 44px
-    iconAffix: "arrow-up-right"
-  button-primary-halo:
-    extends: button-primary
-    boxShadow: "{effects.halo-primary}"
+    description: "Botão Padrão Sólido Primário Azul (Nó 20509:143 do Figma)"
+    backgroundColor: "{colors.primary}" # #09aae0
+    color: "{colors.on-primary}" # #f8f8f8
+    typography: "{typography.button-md}" # 16px bold Montserrat
+    borderRadius: "{rounded.full}" # 100px / rounded-full
+    paddingY: "{spacing.base}" # 16px (py-3.5)
+    paddingX: "{spacing.xl}" # 32px (px-8)
+    gap: "{spacing.sm}" # 8px (gap-2)
+    iconAffix: "arrow-up-right" # ArrowUpRight (16px)
+    transition: "transition-all duration-200"
+    hover: "hover:bg-primary-dark hover:scale-[1.02]"
+    active: "active:scale-[0.98]"
+    focusVisible: "focus-visible:outline-none focus-visible:shadow-focus-ring"
   button-secondary:
-    backgroundColor: "{colors.secondary}"
-    color: "{colors.on-secondary}"
-    typography: "{typography.button-md}"
-    borderRadius: "{rounded.full}"
-    paddingY: "{spacing.md}"
-    paddingX: "{spacing.lg}"
-    height: 44px
-    hoverShadow: "{effects.halo-secondary}"
+    description: "Botão Padrão Sólido Secundário Amarelo"
+    backgroundColor: "{colors.secondary}" # #facc01
+    color: "{colors.on-secondary}" # #3d3d3d
+    typography: "{typography.button-md}" # 16px bold Montserrat
+    borderRadius: "{rounded.full}" # 100px / rounded-full
+    paddingY: "{spacing.base}" # 16px (py-3.5)
+    paddingX: "{spacing.xl}" # 32px (px-8)
+    gap: "{spacing.sm}" # 8px (gap-2)
+    iconAffix: "arrow-up-right" # ArrowUpRight (16px)
+    transition: "transition-all duration-200"
+    hover: "hover:bg-secondary-dark hover:scale-[1.02]"
+    active: "active:scale-[0.98]"
+    focusVisible: "focus-visible:outline-none focus-visible:shadow-focus-ring"
+  button-halo-primary:
+    description: "Botão Primário Azul com Moldura/Halo Externo (6px)"
+    outerWrapper:
+      padding: 6px
+      backgroundColor: "rgba(9, 170, 224, 0.3)"
+      border: "1px solid {colors.primary}"
+      borderRadius: "{rounded.full}"
+    innerButton:
+      backgroundColor: "{colors.primary}"
+      color: "{colors.on-primary}"
+  button-halo-secondary:
+    description: "Botão Secundário Amarelo com Moldura/Halo Externo (6px)"
+    outerWrapper:
+      padding: 6px
+      backgroundColor: "{colors.secondary-tint}"
+      border: "1px solid {colors.secondary-dark}"
+      borderRadius: "{rounded.full}"
+    innerButton:
+      backgroundColor: "{colors.secondary}"
+      color: "{colors.on-secondary}"
+  button-indicator:
+    description: "Botão Indicador / Categoria / Soft (Nó 20509:163 do Figma)"
+    outerWrapper:
+      padding: 6px
+      backgroundColor: "rgba(9, 170, 224, 0.3)" # primary-tint 30%
+      border: "1px solid {colors.primary}" # #09aae0
+      borderRadius: "{rounded.full}"
+    innerButton:
+      backgroundColor: "transparent"
+      color: "{colors.primary-dark}" # #0a88b2
+      typography: "{typography.button-md}" # 16px bold Montserrat
+      borderRadius: "{rounded.full}"
+      paddingY: "{spacing.base}" # 16px (py-3.5)
+      paddingX: "{spacing.xl}" # 32px (px-8)
+      gap: "{spacing.sm}" # 8px (gap-2)
+      iconAffix: "arrow-down" # ArrowDown (16px)
+    transition: "transition-all duration-200"
+    hover: "hover:bg-primary-tint/60 hover:border-primary-dark"
+    active: "active:scale-[0.98]"
+    focusVisible: "focus-visible:outline-none focus-visible:shadow-focus-ring"
+  button-warm:
+    description: "Botão Artigo / Warm (Nó 20509:176 do Figma)"
+    backgroundColor: "rgba(254, 160, 46, 0.1)" # surface-warm / #fff5ea
+    border: "1px solid rgba(254, 160, 46, 0.3)" # border-secondary-dark/30
+    color: "{colors.secondary-dark}" # #fea02e
+    typography: "{typography.button-md}" # 16px bold Montserrat
+    borderRadius: "{rounded.full}" # 100px / rounded-full
+    paddingY: "{spacing.base}" # 16px (py-3.5)
+    paddingX: "{spacing.xl}" # 32px (px-8)
+    width: "w-full" # Preenche a largura do container/card por padrão
+    transition: "transition-all duration-200"
+    hover: "hover:bg-secondary-dark/20 hover:border-secondary-dark/50"
+    active: "active:scale-[0.98]"
+    focusVisible: "focus-visible:outline-none focus-visible:shadow-focus-ring"
+  button-filter-dropdown:
+    trigger:
+      backgroundColor: "rgba(9, 170, 224, 0.1)" # primary-tint 10%
+      border: "1px solid rgba(9, 170, 224, 0.3)"
+      color: "{colors.primary}"
+      typography: "{typography.button-md}"
+      borderRadius: "{rounded.full}"
+      paddingY: "{spacing.md}"
+      paddingX: "{spacing.lg}"
+      icon: "ChevronDown (14px, rotate-180 quando aberto)"
+      hover: "hover:bg-primary-tint/80 hover:border-primary/50"
+    menuFloating:
+      backgroundColor: "{colors.surface-white}"
+      border: "1px solid {colors.hairline}"
+      borderRadius: "{rounded.md}"
+      shadow: "shadow-md"
+      itemTypography: "{typography.small}"
+      itemColor: "{colors.ink}"
+      itemHoverBackground: "{colors.primary-tint}"
+      itemHoverColor: "{colors.primary}"
   button-soft:
     backgroundColor: "{colors.primary-tint}"
     color: "{colors.primary}"
@@ -258,6 +493,9 @@ components:
     typography: "{typography.button-md}"
     borderRadius: "{rounded.full}"
     height: 44px
+    transition: "transition-all duration-200"
+    hover: "hover:bg-primary/10 hover:border-primary-dark hover:scale-[1.02]"
+    active: "active:scale-[0.98]"
   button-warm:
     backgroundColor: "{colors.surface-warm}"
     color: "{colors.secondary-dark}"
@@ -265,23 +503,35 @@ components:
     borderRadius: "{rounded.full}"
     height: 44px
     width: "100%"
+    transition: "transition-all duration-200"
+    hover: "hover:bg-secondary-tint hover:scale-[1.01]"
+    active: "active:scale-[0.98]"
   button-vertical:
     backgroundColor: "{vertical}"
     color: "{colors.on-primary}"
     typography: "{typography.button-md}"
     borderRadius: "{rounded.full}"
     boxShadow: "{effects.halo-vertical}"
+    transition: "transition-all duration-200"
+    hover: "hover:brightness-110 hover:scale-[1.02]"
+    active: "active:scale-[0.98]"
   icon-button-circle-filled:
     backgroundColor: "{colors.secondary}"
     color: "{colors.ink}"
     size: 40px
     borderRadius: "{rounded.full}"
+    transition: "transition-all duration-200"
+    hover: "hover:bg-secondary-dark hover:scale-105"
+    active: "active:scale-95"
   icon-button-circle-outline:
     backgroundColor: transparent
     border: "1px solid {colors.secondary}"
     color: "{colors.secondary-dark}"
     size: 40px
     borderRadius: "{rounded.full}"
+    transition: "transition-all duration-200"
+    hover: "hover:bg-secondary/10 hover:scale-105"
+    active: "active:scale-95"
   eyebrow:
     typography: "{typography.eyebrow}"
     color: "{colors.secondary-dark}"
@@ -372,20 +622,64 @@ components:
     numberColor: "{colors.primary}"
     labelTypography: "{typography.body}"
     labelColor: "{colors.ink}"
-  timeline-rail:
-    lineColor: "{colors.hairline}"
-    lineWidth: 1px
-    dotColor: "{colors.complexos}"
-    dotSize: 10px
-  timeline-item:
-    chipBackground: "{colors.surface-warm}"
-    chipBorder: "1px solid {colors.secondary-dark}"
-    chipRadius: "{rounded.full}"
-    chipTypography: "{typography.small}"
-    chipColor: "{colors.secondary-dark}"
-    titleTypography: "{typography.h3}"
-    titleColor: "{colors.primary}"
-    bodyTypography: "{typography.small}"
+  social-icon-row:
+    description: "Ícones de redes sociais no rodapé (Nó 20509:603 do Figma)"
+    iconSize: 24px
+    iconColor: "{colors.primary}"
+    hoverColor: "{colors.secondary}"
+    gap: 16px
+    transition: "transition-colors duration-200"
+  social-share-row:
+    description: "Ícones de compartilhamento em artigos (Nó 20509:759 do Figma)"
+    badgeSize: 40px
+    badgeBackground: "{colors.canvas}"
+    badgeRadius: "{rounded.full}"
+    iconSize: 22px
+    iconColor: "{colors.secondary-dark}"
+    hoverIconColor: "{colors.primary}"
+    hoverScale: "hover:scale-110"
+    gap: 16px
+    transition: "transition-all duration-200 ease-out"
+  circular-arrow-button:
+    description: "Botão circular com seta (Nós 20509:263 e 20509:288 do Figma)"
+    size: 46px
+    activeBackground: "{colors.secondary}"
+    activeIconColor: "{colors.ink}"
+    inactiveBackground: "transparent"
+    inactiveBorder: "1px solid {colors.secondary}"
+    inactiveIconColor: "{colors.secondary}"
+    iconSize: 24px
+  project-card:
+    description: "Card de projeto com botão circular e logo slot (Nós 20509:263 e 20509:288 do Figma)"
+    background: "{colors.surface-strong}"
+    padding: "32px 24px"
+    radius: "{rounded.lg}"
+    titleTypography: "{typography.card-h}"
+    titleColor: "{colors.ink}"
+    subtitleTypography: "18px Montserrat"
+    subtitleColor: "{colors.body}"
+    gap: 24px
+  timeline:
+    description: "Linha do Tempo (Nó 20509:531 do Figma)"
+    rail:
+      backgroundColor: "{colors.hairline}"
+      width: "1px"
+    dot:
+      size: "16px"
+      backgroundColor: "{colors.secondary}"
+      borderRadius: "{rounded.full}"
+    badge:
+      backgroundColor: "rgba(254, 160, 46, 0.1)"
+      border: "1px solid rgba(254, 160, 46, 0.3)"
+      color: "{colors.secondary-dark}"
+      typography: "{typography.card-p}"
+      borderRadius: "{rounded.full}"
+      padding: "px-3 py-1.5"
+    item:
+      titleTypography: "{typography.h3}"
+      titleColor: "{colors.primary}"
+      bodyTypography: "{typography.card-p}"
+      bodyColor: "{colors.ink}"
   faq-item:
     backgroundColor: "{colors.surface}"
     borderRadius: "{rounded.md}"
@@ -701,11 +995,19 @@ Ao gerar um componente novo que "precisa de profundidade", não introduza sombra
 
 ### Mapa
 
-**`map-projects`** — Mapa de projetos com massa de terra em `{colors.surface-strong}` plana sobre `{colors.canvas}`. Sem relevo, sem fronteiras, sem rótulo de país.
+**`project-map`** — Mapa de projetos interativo (`react-simple-maps`). Fundo/oceano é vazado (`transparent` sobre o container) ou `{colors.canvas}`, terras e continentes em `#B0B0B0` (cinza do layout), sem fronteiras.
 
-**`map-marker`** — Ponto amarelo de 16px com anel em `{colors.secondary-dark}`.
+**`map-marker`** — Ponto (pin) em `{colors.secondary}` (amarelo) com estado ativo (ex: aumenta de tamanho ou ganha halo). Indica a localização dos projetos.
 
-**`map-project-panel`** — Painel lateral que abre ao clicar num marker: fechar em azul no topo, foto, eyebrow laranja com o tipo de empreendimento, título em Riope azul, localização em muted e `{components.button-primary-halo}`.
+**`map-card`** (Project Panel) — Card de detalhe do projeto aberto ao interagir com o pin.
+- **Fundo:** `{colors.surface}` ou `#f3f3f3` com bordas arredondadas `{rounded.xl}` (30px).
+- **Desktop:** Flutua como painel lateral absoluto, com X (fechar) no canto superior.
+- **Mobile:** Renderiza como Bottom Sheet (Modal centralizado na tela).
+- **Conteúdo:** Imagem 16:9 no topo com `{rounded.lg}` (25px).
+- **Eyebrow:** Texto laranja `{colors.secondary-dark}` uppercase (ex: "PARQUE AQUÁTICO") com tracking de 1.4px.
+- **Título:** H3/H4 `{colors.primary}` (azul) em font Riope.
+- **Localização:** Texto `{colors.body}` (cinza escuro `#3d3d3d`) em Montserrat.
+- **Ação:** `{components.button-primary}` "Acessar projeto" com seta.
 
 ### Rodapé e utilitários
 

@@ -139,3 +139,129 @@ geométrica monoline da marca).
 documentada no DS), assume qualquer janela de troca. Antes de desligar, o build com
 `adjustFontFallback: "Arial"` foi usado para **validar o parse da fonte** — o Next extraiu métricas
 reais (`size-adjust: 98,62%`), provando que o arquivo é íntegro e legível.
+
+---
+
+### [2026-08-10] — Colisão `inline-block`: token `--spacing-block` × utility de display
+**Contexto:** no Sandbox, "Projetos" era pintado por cima de "Linhas de Atrações" no `<NavMenu />`.
+A medição no navegador mostrou o wrapper do `<DropdownLink />` com **64px** de largura enquanto o
+conteúdo ocupava 169px. A causa não estava no componente: o Tailwind v4 gera a utility funcional
+`inline-<spacing>` para a propriedade lógica `inline-size`, e o token `spacing.block: 64px` do
+`DESIGN.md` faz a classe **`inline-block` casar com as duas utilities ao mesmo tempo**:
+`.inline-block { display: inline-block }` **e** `.inline-block { inline-size: 64px }`. Como são
+propriedades diferentes, as duas se aplicam — todo elemento com `inline-block` no projeto ficava
+travado em 64px. Afetava `<DropdownLink />`, `<ButtonDropdown />` e `<Eyebrow />`.
+**Decisão:** neutralizar a colisão no `globals.css` com uma regra `.inline-block { inline-size: auto }`
+**fora de qualquer `@layer`** — CSS sem camada sempre vence CSS em camada, independentemente da
+ordem em que o Tailwind emite as utilities. Os componentes não foram alterados.
+**Alternativas descartadas:** renomear `--spacing-block` (o nome vem do `DESIGN.md`, que é a fonte
+da verdade, e quebraria `py-block`/`gap-block` já em uso); trocar `inline-block` por `inline-flex`
+em cada componente (a armadilha continuaria armada para o próximo `inline-block` que alguém
+escrever); `!important` (desnecessário, a camada já resolve).
+**Impacto:** `frontend/src/app/globals.css`. Para a medida de 64px use `w-block`/`p-block`, que não
+são ambíguos. Vale a mesma vigilância para qualquer token de spacing novo cujo nome coincida com
+uma utility estática (`inline-flex`, `inline-grid`, `inline-table`).
+
+---
+
+### [2026-08-10] — Ícones de marca em SVG inline (o `lucide-react` v1 os removeu)
+**Contexto:** a aba "Icons & Social" do Sandbox quebrava com *"Element type is invalid... got:
+undefined"* em `social-links.jsx`. Causa: `lucide-react@1.29.0` **não exporta mais** `Facebook`,
+`Instagram`, `Youtube`, `Twitter` nem `Linkedin` — a biblioteca removeu todos os ícones de marca
+(questão de trademark). Os cinco imports chegavam como `undefined` e o React estourava ao renderizar
+`<Icon />`. Varredura confirmou que era o único arquivo afetado no projeto.
+**Decisão:** criar `src/components/ui/social-icons.jsx` com os cinco glifos como **SVG inline**,
+no mesmo vocabulário visual do Lucide (24×24, `currentColor`, stroke 2, terminais arredondados).
+Exceção: o X só existe em versão sólida, então usa `fill="currentColor"`.
+**Alternativas descartadas:** instalar `react-icons`/`simple-icons` (dependência fora da stack fixa
+do `AGENTS.md` §3, exigiria autorização, e trazendo milhares de ícones para usar cinco); substituir
+por ícones genéricos do Lucide (`Globe`, `AtSign`) — o rodapé perderia o reconhecimento de marca.
+**Impacto:** `social-links.jsx` importa de `./social-icons`. Cor por `currentColor` e tamanho por
+`className`, então o contrato de uso não mudou. **Regra geral: nenhum ícone de marca vem do Lucide
+— todos entram como SVG inline em `social-icons.jsx`** (vale para o WhatsApp FAB da Fase 7).
+
+---
+
+### [2026-08-10] — Classes que não existem: `--spacing-*` sombreia a escala de container, e `font-riope`
+**Contexto:** a `<Timeline />` renderizava uma palavra por linha. Medição no navegador + leitura do
+CSS compilado mostraram `.max-w-lg { max-width: var(--spacing-lg) }` — **24px**, não os 32rem que o
+nome sugere. Nossos tokens de spacing (`xs, sm, md, lg, xl`) têm os mesmos nomes da escala
+`--container-*` do Tailwind, e o namespace de spacing **vence** em `max-w-*`, `min-w-*`, `w-*` e
+`basis-*`. Estavam quebrados: `max-w-lg` (timeline, 24px), `max-w-xs` (button-dropdown, 4px) e
+`max-w-sm` (empty state do sandbox, 8px). Na mesma auditoria apareceu `font-riope` — utility que
+**não existe** (o token é `--font-display`) — em `timeline.jsx`, `value-card.jsx` e `info-card.jsx`:
+três títulos que deveriam ser Riope estavam caindo em Montserrat.
+**Decisão:** (a) não usar nomes ambíguos — as três ocorrências viraram valor explícito
+(`max-w-[320px]`, `max-w-[384px]`) ou foram removidas; (b) `font-riope` → `font-display`;
+(c) auditoria permanente: **toda classe usada no JSX que não gera regra no CSS compilado é
+inválida**, já que o Tailwind emite uma regra para cada classe válida que encontra no código.
+**Alternativas descartadas:** regra corretiva global remapeando `max-w-sm|md|lg|xl` para
+`var(--container-*)` — o Tailwind só emite as variáveis de container efetivamente usadas
+(`--container-lg` não existe no CSS), então a regra apontaria para variável indefinida; e escrever
+os valores literais do Tailwind no `globals.css` criaria uma segunda escala dentro do DS, que é
+exatamente o que o `AGENTS.md` §4.6 proíbe.
+**Impacto:** em `p-*`, `m-*`, `gap-*` os nomes do DS funcionam normalmente. Em **largura**
+(`w-`, `max-w-`, `min-w-`, `basis-`) **nunca** use `xs|sm|md|lg|xl`: ou o valor é do DS, ou é
+explícito. O comando de auditoria está no diário de 2026-08-10.
+
+---
+
+### [2026-08-10] — Classes de plugin substituídas por recursos nativos (sem instalar nada)
+**Contexto:** a auditoria de classes apontou três grupos que não geravam CSS: `bg-surface-muted`
+(token que nunca existiu no DS — as superfícies são `surface`, `surface-strong`, `surface-white`,
+`surface-warm`), `animate-in`/`fade-in-80` (plugin `tailwindcss-animate`) e `prose-ul:*`
+(plugin `@tailwindcss/typography`). Nenhum dos dois plugins está instalado, então eram no-ops:
+`article-card`, `blog-card` e `accordion` ficavam **sem fundo nenhum**.
+**Decisão:** (a) `bg-surface-muted` → `bg-surface` (#f2f2f2, o cinza de card padrão do DS);
+(b) `animate-in fade-in-80 duration-150` → token de animação do próprio DS,
+`--animate-fade-in: fade-in 150ms ease-out` com `@keyframes` dentro do `@theme` do `globals.css`,
+usado como `animate-fade-in`; (c) `prose-ul:*` → variante de descendente `[&_ul]:*`, padrão que o
+projeto já usa em `nav-menu.jsx`.
+**Alternativas descartadas:** instalar `tailwindcss-animate` e `@tailwindcss/typography` — ambos
+fora da stack fixa do `AGENTS.md` §3, e o Tailwind v4 já resolve os dois casos nativamente
+(namespace `--animate-*` e variantes arbitrárias). O `@tailwindcss/typography` volta à mesa na
+Fase 6, se o corpo do Portable Text exigir.
+**Impacto:** a animação é só de opacidade — o DS não descreve movimento, e um fade curto não gera
+o desconforto vestibular que `translate`/`scale` gerariam. Animação nova entra como token
+`--animate-*` no `@theme`, nunca como classe de plugin.
+
+---
+
+### [2026-08-10] — `<ProjectMap />`: `ZoomableGroup` removido e placeholders em PNG
+**Contexto:** o card do mapa não abria. Três causas encadeadas, todas confirmadas por medição no
+navegador: (1) o `<Image>` do card apontava para `images.unsplash.com`, host ausente dos
+`remotePatterns` — daí o *Runtime Error* do print; (2) o `<ZoomableGroup>` do `react-simple-maps`
+engolia o clique: com o pin parado o card abria, mas com um micro-arrasto de **3px** (o que a mão
+humana faz) o d3-zoom tratava o gesto como pan, deslocava o mapa 2px e o `click` nunca chegava ao
+`<Marker>` — era o "pisca-pisca" relatado; (3) três das quatro URLs da Unsplash retornavam **404**.
+**Decisão:** remover o `<ZoomableGroup>` (o `zoom={1} minZoom={1}` + `translateExtent` já
+desabilitavam pan/zoom na prática — testado: arrasto de 60px não movia nada, mas roubava o clique),
+mantendo `Geographies` e `Marker` como filhos diretos do `<ComposableMap>`. Mocks migrados para
+`placehold.co` **com o segmento `/png`**, nas cores do DS (`e6e6e6`/`6c6c6c`). Marcadores ganharam
+`role="button"`, `tabIndex` e Enter/Espaço.
+**Alternativas descartadas:** `filterZoomEvent` para filtrar o `mousedown` (mantém a dependência do
+d3-zoom sem nenhum ganho, já que pan/zoom não são requisito do DS); liberar `images.unsplash.com`
+nos `remotePatterns` (não resolveria — as fotos não existem); `dangerouslyAllowSVG` (vetor de XSS
+com SVG remoto).
+**Impacto:** ⚠️ **`placehold.co` devolve SVG por padrão e o otimizador do Next bloqueia SVG remoto.**
+Todo placeholder precisa do segmento de formato: `placehold.co/600x400/e6e6e6/6c6c6c/png?text=...`.
+O exemplo do `POP.md` (Fase 3, hero) está sem o `/png` e vai quebrar do mesmo jeito quando alguém
+usar. `react-simple-maps@3` declara peer deps de React 16/17/18 — roda no 19, mas sem suporte
+oficial; se der problema de novo, a saída é trocar por SVG próprio, não empilhar workaround.
+
+---
+
+### [2026-08-10] — `<MapCard />` alinhado ao `map-project-panel` (reuso em vez de HTML solto)
+**Contexto:** o painel do mapa estava com estilos próprios que contrariavam o DS: `shadow-xl`/
+`shadow-2xl` (o sistema não usa elevação), `rounded-[30px]`/`rounded-[25px]`, `bg-white/80` no
+botão fechar, escalas default do Tailwind (`text-4xl`, `text-5xl`, `text-sm`, `text-base`), eyebrow
+reescrito à mão e um CTA montado com `<a>` + dois `<span>` em vez do primitivo já existente.
+**Decisão:** reescrever o card conforme `components.map-project-panel` do `DESIGN.md` — `bg-surface`,
+`rounded-md`, `p-lg`, imagem em `rounded-sm`, título `font-display`+`text-h3` em `primary`,
+localização em `text-small text-muted`, fechar em `primary` — e **reutilizar os primitivos**:
+`<Eyebrow variant="dark">` para o tipo de empreendimento e `<Button variant="halo-primary">` para a
+ação, que é literalmente o que a spec pede (`action: {components.button-primary-halo}`).
+**Alternativas descartadas:** manter o CTA artesanal (duplicava estados de hover/foco que o
+`<Button />` já resolve e divergia do resto do site).
+**Impacto:** o painel deixou de ter sombra e passou a herdar hover, foco e ícone do `<Button />`.
+Reforça a lei 7 do `AGENTS.md`: antes de escrever HTML, checar `04-COMPONENTES.md`.
