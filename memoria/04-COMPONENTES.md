@@ -19,7 +19,7 @@
 | `<CircularArrow />` | `circular-arrow.jsx` | **S** | `isActive`, `className` | — |
 | `<TextLink />` | `text-link.jsx` | **S** | `children`, `href`, `active`, `className` | — · renderiza `next/link` |
 | `<DropdownLink />` | `dropdown-link.jsx` | **S** | `title`, `items`, `active`, `className` | — · menu por `group-hover` (CSS puro) |
-| `<NavMenu />` | `nav-menu.jsx` | **C** | `logoSlot`, `forceScrolled`, `position`, `className` | ouve `scroll` para alternar Normal/Scrolled |
+| `<NavMenu />` | `nav-menu.jsx` | **C** | `logoSlot`, `forceScrolled`, `position`, `className` | Ouve `scroll` para alternar Normal/Scrolled; Gerencia estado do menu Hamburger (overlay mobile). |
 
 ### Átomos tipográficos e listas
 | Componente | Arquivo | S/C | Props | Justificativa se for C |

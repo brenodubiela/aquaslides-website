@@ -3,43 +3,32 @@
 > Atualizado a cada `/checkpoint`. O topo é sempre a próxima ação.
 
 ## ▶️ PRÓXIMO PASSO EXATO
-**Fase:** 3 — Rotas, Layouts & SEO
-**Tarefa:** layout raiz com `<Header />` e `<Footer />`, as rotas do escopo por pastas, o wrapper
-de animação `<Reveal />` e o SEO técnico (`sitemap.js`, `robots.js`, JSON-LD)
-**Arquivo(s) alvo:** `src/app/layout.jsx`, `src/components/layout/{header,footer,mobile-menu}.jsx`,
-`src/components/ui/reveal.jsx`, `src/app/{sobre,servicos,contato,projetos}/page.jsx`,
-`src/app/sitemap.js`, `src/app/robots.js`
-**Prompt a usar:** POP.md → Prompt Mestre #3
-**Pré-requisito:** nenhum — os 26 primitivos da Fase 2 já cobrem o que Header e Footer precisam
-(`<NavMenu />`, `<TextLink />`, `<DropdownLink />`, `<Button />`, `<SocialLinks />`)
+**Fase:** 4 — Módulos Legais & LGPD
+**Tarefa:** Criar página de Política de Privacidade e Termos de Uso.
+**Arquivo(s) alvo:** `src/data/legal-texts.js`, `src/app/(legal)/politica-de-privacidade/page.jsx`, `src/app/(legal)/termos-de-uso/page.jsx`, `cookie-banner.jsx`
+**Prompt a usar:** POP.md → Prompt Mestre #4
+**Pré-requisito:** nenhum.
 
 ---
 
-## ✅ Fase 2 — Componentização Base (CONCLUÍDA em 2026-08-10)
-Aceite do Anexo C atendido: `/design-system` responde 200 com `noindex` e os primitivos estão
-injetados. Entregues **26 primitivos** em `src/components/ui/` (21 Server + 5 Client), listados um
-a um em `04-COMPONENTES.md`:
-- **Botões/navegação:** `Button` (14 variantes), `ButtonDropdown`, `CircularArrow`, `TextLink`,
-  `DropdownLink`, `NavMenu`
-- **Átomos:** `Eyebrow`, `CheckItem`, `PowerNumber`, `SocialLinks`, `social-icons`, `value-icons`
-- **Cards:** `ProjectCard`, `TestimonialCard`, `ArticleCard`, `BlogCard`, `ClientLogoCard`,
-  `ValueCard`, `InfoCard`
-- **Blocos:** `Timeline`, `Accordion`, `ProjectMap`
-- **Formulário:** `Input`, `Select`, `Label`, `ContactForm`
+## ✅ Fase 3 — Rotas, Layouts & SEO (CONCLUÍDA em 2026-08-11)
+Aceite do Anexo C atendido:
+- `npm run lint` passando (typescript 5 adicionado via devDeps)
+- Build estático sem erros (○) para as novas rotas.
+- `<Reveal>` encapsulando as páginas que são renderizadas no servidor.
+- Layout raiz com Header (reutilizando NavMenu) e Footer criados e mapeados.
+- `robots.js` e `sitemap.js` operando e respondendo na rota correta.
 
 ## 🔍 Pente-fino de tokens (adiado — fazer antes da Fase 8)
 Vários primitivos da Fase 2 ainda usam escalas default do Tailwind em vez dos tokens do DS
 (`text-2xl`, `text-sm`, `text-base`, `p-4`, `gap-4`, `rounded-[30px]`, `shadow-*`). O `<Timeline />`
-e o `<ProjectMap />` já foram alinhados e servem de referência. **Não bloqueia a Fase 3** — o
-alinhamento é troca de classe, não de estrutura.
+e o `<ProjectMap />` já foram alinhados e servem de referência.
 Lembretes da auditoria: largura nunca usa `xs|sm|md|lg|xl`; headline é `font-display`, não
 `font-riope`; placeholder de imagem precisa do `/png`.
 
 ## Fases pendentes
 - [x] Fase 2 — Componentização Base — **concluída em 2026-08-10**
-- [ ] Fase 3 — Rotas, Layouts & SEO — rotas: `/`, `/sobre`, `/servicos`, `/contato`,
-      `/verticais/[slug]` (template único × 7), `/projetos`; + `<Header />`, `<Footer />`,
-      `<Reveal />`, `sitemap.js`, `robots.js`, JSON-LD `Organization`
+- [x] Fase 3 — Rotas, Layouts & SEO — **concluída em 2026-08-11**
 - [ ] Fase 4 — Módulos Legais & LGPD — `src/data/legal-texts.js`, `(legal)/politica-de-privacidade`,
       `(legal)/termos-de-uso`, `cookie-banner.jsx`
 - [ ] Fase 5 — Sanity CMS na pasta `studio/` (hoje vazia; **não** inicializar antes) — schema `post`
@@ -55,12 +44,6 @@ Lembretes da auditoria: largura nunca usa `xs|sm|md|lg|xl`; headline é `font-di
 - Resolver o gap de contraste do `card-vertical-tile` (scrim ou text-shadow) — apontado no DS.
 - Revisar as vulnerabilidades transitivas de `postcss`/`sharp` do Next 15 antes do deploy (Fase 8).
 - Avaliar `next/font/local` para reduzir a cadeia de fallback do Montserrat.
-
-## Decisões pendentes (dependem do Breno)
-| O que | Impacto se não decidir |
-|---|---|
-| `npm i -D typescript` (devDependency, AGENTS.md §3) | `npm run lint` continua quebrado |
-| `react-simple-maps@3` sem suporte oficial a React 19 | risco de quebra futura no `<ProjectMap />` |
 
 ## Aguardando o cliente
 | O que | Pedido em | Status |

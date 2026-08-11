@@ -90,13 +90,13 @@ const variantStyles = {
     defaultIcon: false,
   },
   "halo-primary": {
-    wrapper: "bg-primary-tint/40 border-primary/60 hover:bg-primary-tint/70 hover:border-primary",
+    wrapper: "bg-primary/30 border-primary hover:bg-primary/40 hover:border-primary-dark",
     inner: "bg-primary text-on-primary group-hover:bg-primary-dark",
     hasHalo: true,
     defaultIcon: "up-right",
   },
   "halo-secondary": {
-    wrapper: "bg-secondary-tint/50 border-secondary-dark/60 hover:bg-secondary-tint/80 hover:border-secondary-dark",
+    wrapper: "bg-secondary/30 border-secondary hover:bg-secondary/40 hover:border-secondary-dark",
     inner: "bg-secondary text-on-secondary group-hover:bg-secondary-dark",
     hasHalo: true,
     defaultIcon: "up-right",

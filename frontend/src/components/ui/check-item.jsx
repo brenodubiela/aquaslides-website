@@ -21,10 +21,10 @@ export function CheckItem({ text, className, ...props }) {
       )}
       {...props}
     >
-      <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary-tint text-secondary transition-all duration-300 group-hover:bg-secondary group-hover:text-ink">
+      <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary/30 text-secondary transition-all duration-300 group-hover:bg-secondary group-hover:text-ink">
         <Check className="size-4" strokeWidth={3} />
       </div>
-      <p className="font-sans text-card-p tracking-[-0.8px] text-ink">
+      <p className="font-sans text-card-p tracking-[-0.8px] inherit">
         {text}
       </p>
     </li>

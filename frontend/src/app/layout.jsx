@@ -52,13 +52,34 @@ export const metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Aqua Slides",
+  url: "https://aquaslides.com.br",
+  logo: "https://aquaslides.com.br/logomenu.svg",
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+55-47-99151-6680",
+    contactType: "customer service"
+  }
+};
+
 export default function RootLayout({ children }) {
   return (
     <html
       lang="pt-BR"
       className={`${riope.variable} ${montserrat.variable} ${quicksand.variable}`}
     >
-      <body>{children}</body>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className="flex min-h-screen flex-col font-sans text-body bg-canvas antialiased selection:bg-primary selection:text-canvas">
+        {children}
+      </body>
     </html>
   );
 }

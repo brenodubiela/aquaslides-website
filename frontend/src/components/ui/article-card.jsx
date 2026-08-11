@@ -45,10 +45,10 @@ export function ArticleCard({
 
       {/* Conteúdo Textual */}
       <div className="flex flex-col gap-2 shrink-0 flex-grow">
-        <h3 className="font-sans font-bold text-2xl tracking-[-1px] text-ink leading-[1.2] line-clamp-3">
+        <h3 className="font-sans font-bold text-2xl tracking-[-1px] text-ink leading-[1.2] line-clamp-2">
           {title}
         </h3>
-        <p className="font-sans text-base tracking-[-0.8px] text-ink/80 leading-relaxed line-clamp-3">
+        <p className="font-sans text-base tracking-[-0.8px] text-ink/80 leading-relaxed line-clamp-2">
           {excerpt}
         </p>
       </div>

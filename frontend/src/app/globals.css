@@ -214,6 +214,7 @@
      `animate-in`/`fade-in-80` do plugin `tailwindcss-animate`, que não está
      (nem precisa estar) instalado. */
   --animate-fade-in: fade-in 150ms ease-out;
+  --animate-marquee: marquee 30s linear infinite;
 
   @keyframes fade-in {
     from {
@@ -221,6 +222,15 @@
     }
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-33.333333%);
     }
   }
 }

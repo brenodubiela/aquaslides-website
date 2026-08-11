@@ -265,3 +265,27 @@ ação, que é literalmente o que a spec pede (`action: {components.button-prima
 `<Button />` já resolve e divergia do resto do site).
 **Impacto:** o painel deixou de ter sombra e passou a herdar hover, foco e ícone do `<Button />`.
 Reforça a lei 7 do `AGENTS.md`: antes de escrever HTML, checar `04-COMPONENTES.md`.
+
+---
+
+### [2026-08-11] — Header vira `fixed`; fim do `-mt-[79px]` no `<main>`
+**Contexto:** relato de header "cortado" ao rolar para baixo no mobile. Medi a geometria em Chrome
+emulado (390×844) em três estados de scroll e com a barra de URL simulada (viewport 844→900→844):
+header sempre 79px, logo sempre em +12, hambúrguer em +17.5 — **layout estável, nada cortado**.
+O CSSOM também estava correto no scroll (`bg-primary`, `opacity 1`, `z-50`). **Não reproduzi o
+sintoma**; capturas em branco que apareceram no meio do caminho eram artefato do headless
+(`fromSurface: true`), desmentido pela captura com `fromSurface: false`.
+O que a medição **provou** foi outro defeito, esse real: com `<main className="flex-1 -mt-[79px]">`
+o conteúdo era puxado por cima da caixa de fluxo do header sticky, e a headline do hero renderizava
+**por baixo** da barra (hero `pt-[120px]` − 79 = 41px de folga contra 79px de header).
+**Decisão:** (a) header passa de `sticky` para **`fixed inset-x-0 top-0`** — é o que o `DESIGN.md`
+descreve em `nav-transparent` ("fica absoluta sobre o hero"); (b) `-mt-[79px]` removido, já que
+`fixed` não ocupa fluxo e todas as páginas já reservam o topo (`pt-[120px]` no hero, `pt-[150px]`
+nas demais); (c) `transition-all` → `transition-colors` no `<nav>`, porque só a cor muda; (d)
+promoção de camada com **`[will-change:opacity]`**.
+**Alternativas descartadas:** `transform: translateZ(0)`/`will-change: transform` para promover a
+camada — **quebraria o menu mobile**: o overlay é `fixed inset-0` e vive dentro do `<header>`, e
+`transform` faria o header virar containing block dele. `will-change: opacity` promove sem criar
+containing block. Verificado: o overlay continua 390×844 a partir de (0,0).
+**Impacto:** some o número mágico `79` acoplado à altura do header (`py-md` + logo 55px), que
+quebraria silenciosamente a qualquer mudança no logo ou no padding.
