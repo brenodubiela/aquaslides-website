@@ -24,5 +24,17 @@ export default function sitemap() {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: 'https://aquaslides.com.br/politica-de-privacidade',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: 'https://aquaslides.com.br/termos-de-uso',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
   ];
 }

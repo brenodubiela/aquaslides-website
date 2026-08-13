@@ -2,29 +2,11 @@ import { Reveal } from "@/components/ui/reveal";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
 import { ArticleCard } from "@/components/ui/article-card";
-
-const articles = [
-  {
-    title: "A Era dos Resorts Híbridos: Como a Arquitetura Sensorial Aumenta o Ticket Médio",
-    excerpt: "Descubra como a integração de paisagismo tropical com atrações de alto impacto visual está redefinindo a experiência do hóspede e ampliando a receita.",
-    imageSrc: "/artigo1.png",
-    href: "/blog/resorts-hibridos",
-  },
-  {
-    title: "Segurança e Normas ABNT: Blindando seu Patrimônio Contra Riscos Invisíveis",
-    excerpt: "Entenda os critérios técnicos essenciais na manutenção de fibra de vidro e estruturas metálicas para garantir a longevidade do equipamento e a segurança total.",
-    imageSrc: "/artigo2.png",
-    href: "/blog/seguranca-abnt",
-  },
-  {
-    title: "O Poder do Retrofit: Revitalizando Áreas Ociosas com Baixo Custo Operacional",
-    excerpt: "Estratégias inteligentes para transformar piscinas antigas em complexos de lazer modernos, atraindo novas famílias sem a necessidade de grandes obras civis.",
-    imageSrc: "/artigo3.png",
-    href: "/blog/retrofit",
-  },
-];
+import { mockBlogPosts } from "@/data/mock-blog";
 
 export function HomeBlog() {
+  const latestPosts = mockBlogPosts.slice(0, 3);
+
   return (
     <section className="py-section bg-canvas">
       <div className="mx-auto w-full max-w-content px-xl">
@@ -51,13 +33,13 @@ export function HomeBlog() {
 
         {/* Grid de Artigos */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {articles.map((article, index) => (
+          {latestPosts.map((article, index) => (
             <Reveal key={index} delay={0.4 + (index * 0.1)}>
               <ArticleCard 
                 title={article.title}
                 excerpt={article.excerpt}
-                imageSrc={article.imageSrc}
-                href={article.href}
+                imageSrc={article.image}
+                href={`/blog/${article.slug}`}
               />
             </Reveal>
           ))}

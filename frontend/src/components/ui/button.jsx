@@ -89,6 +89,11 @@ const variantStyles = {
     hasHalo: false,
     defaultIcon: false,
   },
+  outline: {
+    base: "bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white active:scale-[0.98]",
+    hasHalo: false,
+    defaultIcon: "up-right",
+  },
   "halo-primary": {
     wrapper: "bg-primary/30 border-primary hover:bg-primary/40 hover:border-primary-dark",
     inner: "bg-primary text-on-primary group-hover:bg-primary-dark",

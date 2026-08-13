@@ -18,10 +18,6 @@ next-env.d.ts
 .turbo/
 .swc/
 
-# Sanity (Fase 5)
-studio/dist/
-studio/.sanity/
-
 # Testes e cobertura
 coverage/
 .nyc_output/

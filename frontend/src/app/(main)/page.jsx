@@ -3,10 +3,10 @@ import { HomeStats } from "@/components/sections/home-stats";
 import { HomeSolutions } from "@/components/sections/home-solutions";
 import { HomeClients } from "@/components/sections/home-clients";
 import { HomeSuccessCases } from "@/components/sections/home-success-cases";
-import { HomeReference } from "@/components/sections/home-reference";
 import { HomeTestimonials } from "@/components/sections/home-testimonials";
 import { HomeBlog } from "@/components/sections/home-blog";
 import { HomeFaq } from "@/components/sections/home-faq";
+import { SharedCta } from "@/components/sections/shared-cta";
 
 export const metadata = {
   title: "Início",
@@ -19,12 +19,20 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main>
-      <Hero />
+      <Hero 
+        eyebrow="Especialistas em Equipamentos Aquáticos"
+        title={<>Atrações aquáticas completas, <span className="text-secondary">do projeto à operação</span></>}
+        description="Instalação inclusa em todo o Brasil"
+        buttonText="Solicite seu Projeto"
+        buttonHref="/contato"
+        bgDesktop="/home-bghero-desktop.jpg"
+        bgMobile="/home-bghero-mobile.jpg"
+      />
       <HomeStats />
       <HomeSolutions />
       <HomeClients />
       <HomeSuccessCases />
-      <HomeReference />
+      <SharedCta />
       <HomeTestimonials />
       <HomeBlog />
       <HomeFaq />

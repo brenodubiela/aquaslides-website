@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
 import { TextLink } from "./text-link";
@@ -29,13 +30,13 @@ import { Menu, X } from "lucide-react";
  */
 
 const atracoesItems = [
-  { label: "Ball", href: "/atracoes/ball" },
-  { label: "Fresh", href: "/atracoes/fresh" },
-  { label: "Ramp", href: "/atracoes/ramp" },
-  { label: "Free Fall", href: "/atracoes/free-fall" },
-  { label: "Playground", href: "/atracoes/playground" },
-  { label: "Toboágua", href: "/atracoes/toboagua" },
-  { label: "Complexos", href: "/atracoes/complexos" },
+  { label: "Aqua Ball", href: "/linhas-de-atracao/aqua-ball" },
+  { label: "Fresh", href: "/linhas-de-atracao/fresh" },
+  { label: "Ramp", href: "/linhas-de-atracao/ramp" },
+  { label: "Free Fall", href: "/linhas-de-atracao/free-fall" },
+  { label: "Playground", href: "/linhas-de-atracao/playground" },
+  { label: "Toboágua", href: "/linhas-de-atracao/toboagua" },
+  { label: "Complexos", href: "/linhas-de-atracao/complexos" },
 ];
 
 export function NavMenu({
@@ -45,6 +46,7 @@ export function NavMenu({
   className,
   ...props
 }) {
+  const pathname = usePathname() || "";
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -116,17 +118,16 @@ export function NavMenu({
           <div className="hidden md:flex items-center justify-center gap-xl whitespace-nowrap">
             <TextLink
               href="/"
-              active
-              className="text-secondary"
+              active={pathname === "/"}
+              className={cn(pathname !== "/" && "text-canvas")}
             >
               Início
             </TextLink>
 
             <TextLink
               href="/sobre"
-              className={cn(
-                scrolled ? "text-canvas hover:text-secondary" : "text-ink hover:text-secondary"
-              )}
+              active={pathname === "/sobre"}
+              className={cn(pathname !== "/sobre" && "text-canvas")}
             >
               Sobre a Empresa
             </TextLink>
@@ -134,31 +135,25 @@ export function NavMenu({
             <DropdownLink
               title="Linhas de Atrações"
               items={atracoesItems}
+              active={pathname.startsWith("/linhas-de-atracao")}
               className={cn(
                 "[&_button]:transition-colors [&_button]:duration-300",
-                scrolled
-                  ? "[&_button]:text-canvas [&_button]:hover:text-secondary"
-                  : "[&_button]:text-ink [&_button]:hover:text-secondary",
-                scrolled
-                  ? "[&_svg]:text-canvas"
-                  : "[&_svg]:text-ink"
+                !pathname.startsWith("/linhas-de-atracao") && "[&_button]:text-canvas [&_button]:hover:text-secondary [&_svg]:text-canvas"
               )}
             />
 
             <TextLink
               href="/projetos"
-              className={cn(
-                scrolled ? "text-canvas hover:text-secondary" : "text-ink hover:text-secondary"
-              )}
+              active={pathname === "/projetos"}
+              className={cn(pathname !== "/projetos" && "text-canvas")}
             >
               Projetos
             </TextLink>
 
             <TextLink
               href="/blog"
-              className={cn(
-                scrolled ? "text-canvas hover:text-secondary" : "text-ink hover:text-secondary"
-              )}
+              active={pathname === "/blog"}
+              className={cn(pathname !== "/blog" && "text-canvas")}
             >
               Blog
             </TextLink>
@@ -194,10 +189,10 @@ export function NavMenu({
       {isMobileOpen && (
         <div className="fixed inset-0 z-40 bg-primary pt-[100px] px-xl pb-section overflow-y-auto flex flex-col md:hidden animate-in fade-in duration-200">
           <div className="flex flex-col gap-lg flex-1">
-            <TextLink href="/" className="text-h2-mobile text-canvas hover:text-secondary" onClick={() => setIsMobileOpen(false)}>
+            <TextLink href="/" active={pathname === "/"} className={cn("text-h2-mobile hover:text-secondary", pathname !== "/" && "text-canvas")} onClick={() => setIsMobileOpen(false)}>
               Início
             </TextLink>
-            <TextLink href="/sobre" className="text-h2-mobile text-canvas hover:text-secondary" onClick={() => setIsMobileOpen(false)}>
+            <TextLink href="/sobre" active={pathname === "/sobre"} className={cn("text-h2-mobile hover:text-secondary", pathname !== "/sobre" && "text-canvas")} onClick={() => setIsMobileOpen(false)}>
               Sobre a Empresa
             </TextLink>
             
@@ -205,18 +200,18 @@ export function NavMenu({
               <span className="text-canvas/50 text-eyebrow uppercase tracking-widest font-bold">Linhas de Atrações</span>
               <div className="flex flex-col gap-4 pl-4 border-l-2 border-canvas/20">
                 {atracoesItems.map((item) => (
-                  <TextLink key={item.href} href={item.href} className="text-p-mobile font-bold text-canvas hover:text-secondary" onClick={() => setIsMobileOpen(false)}>
+                  <TextLink key={item.href} href={item.href} active={pathname === item.href} className={cn("text-p-mobile font-bold hover:text-secondary", pathname !== item.href && "text-canvas")} onClick={() => setIsMobileOpen(false)}>
                     {item.label}
                   </TextLink>
                 ))}
               </div>
             </div>
 
-            <TextLink href="/projetos" className="text-h2-mobile text-canvas hover:text-secondary" onClick={() => setIsMobileOpen(false)}>
+            <TextLink href="/projetos" active={pathname === "/projetos"} className={cn("text-h2-mobile hover:text-secondary", pathname !== "/projetos" && "text-canvas")} onClick={() => setIsMobileOpen(false)}>
               Projetos
             </TextLink>
             
-            <TextLink href="/blog" className="text-h2-mobile text-canvas hover:text-secondary" onClick={() => setIsMobileOpen(false)}>
+            <TextLink href="/blog" active={pathname === "/blog"} className={cn("text-h2-mobile hover:text-secondary", pathname !== "/blog" && "text-canvas")} onClick={() => setIsMobileOpen(false)}>
               Blog
             </TextLink>
 

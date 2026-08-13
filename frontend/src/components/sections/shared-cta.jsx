@@ -6,7 +6,7 @@ import { CheckItem } from "@/components/ui/check-item";
 
 const BG_IMAGE = "/ctaimg-crianca.jpg";
 
-export function HomeReference() {
+export function SharedCta() {
   return (
     <section className="relative overflow-hidden py-24 w-full flex items-center min-h-[600px]">
       {/* Imagem de Fundo */}
@@ -55,7 +55,7 @@ export function HomeReference() {
           <Reveal delay={0.5}>
             {/* Seguindo a regra do botão do Hero (Halo), mas aplicando a cor amarela (secondary) pedida no Figma/Prompt */}
             <Button href="/contato" variant="halo-secondary" size="lg">
-              Solicitar Projeto
+              Solicite um projeto
             </Button>
           </Reveal>
         </div>

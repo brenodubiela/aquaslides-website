@@ -3,9 +3,15 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "./input";
-import { Select } from "./select";
 import { Label } from "./label";
 import { Button } from "./button";
+
+const TYPE_OPTIONS = [
+  { id: "parque_aquatico", label: "Parque Aquático" },
+  { id: "resort", label: "Resort / Hotel" },
+  { id: "condominio", label: "Condomínio Residencial" },
+  { id: "outro", label: "Outro" },
+];
 
 /**
  * Primitivo `<ContactForm />` — Aqua Slides Design System
@@ -52,76 +58,74 @@ export function ContactForm({ className, ...props }) {
       {...props}
     >
       {/* Campo: Nome Completo */}
-      <div className="flex flex-col gap-1.5 w-full">
-        <Label htmlFor="name">Nome completo</Label>
+      <div className="flex flex-col gap-2 w-full">
+        <Label htmlFor="name" className="text-white">Nome completo</Label>
         <Input 
           id="name"
           placeholder="Digite seu nome completo"
           hasError={!!errors.name}
+          className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-secondary focus:ring-secondary"
           {...register("name", { required: "Campo obrigatório" })} 
         />
         {errors.name && (
-          <span className="font-sans text-sm text-red-500 mt-1">{errors.name.message}</span>
+          <span className="font-sans text-sm text-red-400">{errors.name.message}</span>
         )}
       </div>
 
       {/* Campo: Telefone/Whatsapp */}
-      <div className="flex flex-col gap-1.5 w-full">
-        <Label htmlFor="phone">Telefone/Whatsapp:</Label>
+      <div className="flex flex-col gap-2 w-full">
+        <Label htmlFor="phone" className="text-white">Telefone/Whatsapp:</Label>
         <Input 
           id="phone"
           type="tel"
           placeholder="(00) 00000-0000"
           hasError={!!errors.phone}
+          className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-secondary focus:ring-secondary"
           {...register("phone", { required: "Campo obrigatório" })} 
         />
         {errors.phone && (
-          <span className="font-sans text-sm text-red-500 mt-1">{errors.phone.message}</span>
+          <span className="font-sans text-sm text-red-400">{errors.phone.message}</span>
         )}
       </div>
 
-      {/* Campo: Tipo de Empreendimento */}
-      <div className="flex flex-col gap-1.5 w-full relative">
-        <Label htmlFor="type">Tipo de Empreendimento:</Label>
-        <div className="relative w-full">
-          <Select 
-            id="type"
-            hasError={!!errors.type}
-            {...register("type", { required: "Campo obrigatório" })} 
-          >
-            <option value="">Selecione uma opção</option>
-            <option value="parque_aquatico">Parque Aquático</option>
-            <option value="resort">Resort / Hotel</option>
-            <option value="condominio">Condomínio Residencial</option>
-            <option value="outro">Outro</option>
-          </Select>
-          {/* Seta customizada do select (opcional para simular visual do Figma) */}
-          <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-ink">
-            <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
+      {/* Campo: Tipo de Empreendimento (Multi-select) */}
+      <div className="flex flex-col gap-3 w-full">
+        <Label className="text-white">Tipo de Empreendimento (Múltipla escolha):</Label>
+        <div className="flex flex-wrap gap-3">
+          {TYPE_OPTIONS.map((opt) => (
+            <label key={opt.id} className="cursor-pointer relative">
+              <input
+                type="checkbox"
+                value={opt.id}
+                className="peer sr-only"
+                {...register("type", { required: "Selecione pelo menos uma opção" })}
+              />
+              <div className="px-5 py-2.5 rounded-full border border-white/20 bg-white/10 text-white font-sans text-sm peer-checked:bg-secondary peer-checked:border-secondary peer-checked:text-secondary-dark transition-all duration-200 hover:bg-white/20 select-none">
+                {opt.label}
+              </div>
+            </label>
+          ))}
         </div>
         {errors.type && (
-          <span className="font-sans text-sm text-red-500 mt-1">{errors.type.message}</span>
+          <span className="font-sans text-sm text-red-400">{errors.type.message}</span>
         )}
       </div>
 
       {/* Mensagens de Feedback */}
       {submitStatus === "success" && (
-        <div className="bg-green-50 text-green-700 p-4 rounded-xl font-sans text-sm border border-green-200">
+        <div className="bg-green-500/20 text-green-200 p-4 rounded-xl font-sans text-sm border border-green-500/30">
           Formulário enviado com sucesso! Entraremos em contato em breve.
         </div>
       )}
       
       {submitStatus === "error" && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-xl font-sans text-sm border border-red-200">
+        <div className="bg-red-500/20 text-red-200 p-4 rounded-xl font-sans text-sm border border-red-500/30">
           Ocorreu um erro ao enviar. Tente novamente.
         </div>
       )}
 
       {/* Botão de Envio */}
-      <div className="mt-2 w-full">
+      <div className="mt-4 w-full">
         <Button 
           type="submit" 
           variant="halo-primary" 

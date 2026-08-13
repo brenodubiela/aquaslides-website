@@ -52,6 +52,8 @@ export const metadata = {
   },
 };
 
+import { CookieBanner } from "@/components/ui/cookie-banner";
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -79,6 +81,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="flex min-h-screen flex-col font-sans text-body bg-canvas antialiased selection:bg-primary selection:text-canvas">
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

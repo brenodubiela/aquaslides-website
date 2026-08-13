@@ -8,45 +8,7 @@ import { cn } from "@/utils/cn";
 import { Button } from "./button";
 import { Eyebrow } from "./eyebrow";
 
-// Mocks simulando retorno do backend
-const MOCK_PROJECTS = [
-  {
-    id: 1,
-    title: "Complexo F36",
-    subtitle: "Thermas da Mata Cutia/SP Tobo Joy-010 - Residencial - MG",
-    type: "PARQUE AQUÁTICO",
-    coordinates: [-46.825, -23.613], // Cutia/SP approx
-    image: "https://placehold.co/600x400/e6e6e6/6c6c6c/png?text=Complexo+F36",
-    href: "#"
-  },
-  {
-    id: 2,
-    title: "Eco Resort Praia",
-    subtitle: "Resort Litoral Sul - Toboáguas e Piscina de Ondas",
-    type: "RESORT",
-    coordinates: [-38.481, -12.971], // Salvador approx
-    image: "https://placehold.co/600x400/e6e6e6/6c6c6c/png?text=Eco+Resort+Praia",
-    href: "#"
-  },
-  {
-    id: 3,
-    title: "Parque Acqua Sul",
-    subtitle: "Complexo de lazer infantil e radical",
-    type: "CLUBE",
-    coordinates: [-51.217, -30.034], // Porto Alegre approx
-    image: "https://placehold.co/600x400/e6e6e6/6c6c6c/png?text=Parque+Acqua+Sul",
-    href: "#"
-  },
-  {
-    id: 4,
-    title: "Hotel Fazenda Sol",
-    subtitle: "Piscina aquecida e complexo de rio lento",
-    type: "HOTELARIA",
-    coordinates: [-43.172, -22.906], // Rio de Janeiro approx
-    image: "https://placehold.co/600x400/e6e6e6/6c6c6c/png?text=Hotel+Fazenda+Sol",
-    href: "#"
-  }
-];
+import { Select } from "./select";
 
 const geoUrl = "/topojson/world-110m.json";
 
@@ -81,15 +43,15 @@ function MapCard({ project, onClose, isMobile }) {
       </div>
 
       <div className="flex flex-col items-start gap-base">
-        <Eyebrow variant="dark">{project.type}</Eyebrow>
+        <Eyebrow variant="dark">{project.linhaAtracao}</Eyebrow>
 
         <h3 className="font-display text-h3-mobile text-primary md:text-h3">
           {project.title}
         </h3>
 
-        <p className="text-small text-muted">{project.subtitle}</p>
+        <p className="text-small text-muted">{project.locationText}</p>
 
-        <Button variant="halo-primary" href={project.href} className="mt-sm">
+        <Button variant="halo-primary" href={`/projetos/${project.slug}`} className="mt-sm">
           Acessar projeto
         </Button>
       </div>
@@ -97,9 +59,11 @@ function MapCard({ project, onClose, isMobile }) {
   );
 }
 
-export function ProjectMap({ className }) {
+export function ProjectMap({ className, projects = [] }) {
   const [activeProject, setActiveProject] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [filterAtracao, setFilterAtracao] = useState("all");
+  const [filterAtuacao, setFilterAtuacao] = useState("all");
 
   useEffect(() => {
     const checkMobile = () => {
@@ -110,8 +74,42 @@ export function ProjectMap({ className }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  const linhasAtracao = [
+    "Ball",
+    "Fresh",
+    "Ramp",
+    "Free Fall",
+    "Playground",
+    "Toboágua",
+    "Complexos"
+  ];
+  const areasAtuacao = [...new Set(projects.map(p => p.areaAtuacao))].filter(Boolean);
+
+  const filteredProjects = projects.filter(p => {
+    const matchAtracao = filterAtracao === "all" || p.linhaAtracao === filterAtracao;
+    const matchAtuacao = filterAtuacao === "all" || p.areaAtuacao === filterAtuacao;
+    return matchAtracao && matchAtuacao;
+  });
+
   return (
-    <div className={cn("relative w-full h-full bg-canvas overflow-hidden", className)}>
+    <div className={cn("relative w-full h-[600px] md:h-[800px] bg-canvas overflow-hidden", className)}>
+      
+      {/* Filtros flutuantes */}
+      <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex flex-col md:flex-row gap-4 w-[calc(100%-2rem)] md:w-auto min-w-[300px]">
+        <Select value={filterAtracao} onChange={(e) => { setFilterAtracao(e.target.value); setActiveProject(null); }}>
+          <option value="all">Todas as Linhas de Atração</option>
+          {linhasAtracao.map(linha => (
+            <option key={linha} value={linha}>{linha}</option>
+          ))}
+        </Select>
+        <Select value={filterAtuacao} onChange={(e) => { setFilterAtuacao(e.target.value); setActiveProject(null); }}>
+          <option value="all">Todas as Áreas de Atuação</option>
+          {areasAtuacao.map(area => (
+            <option key={area} value={area}>{area}</option>
+          ))}
+        </Select>
+      </div>
+
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
@@ -139,7 +137,7 @@ export function ProjectMap({ className }) {
           }
         </Geographies>
 
-        {MOCK_PROJECTS.map((project) => {
+        {filteredProjects.map((project) => {
           const isActive = activeProject?.id === project.id;
           return (
             <Marker

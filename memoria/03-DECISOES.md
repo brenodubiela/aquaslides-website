@@ -289,3 +289,15 @@ camada — **quebraria o menu mobile**: o overlay é `fixed inset-0` e vive dent
 containing block. Verificado: o overlay continua 390×844 a partir de (0,0).
 **Impacto:** some o número mágico `79` acoplado à altura do header (`py-md` + logo 55px), que
 quebraria silenciosamente a qualquer mudança no logo ou no padding.
+
+---
+
+### [2026-08-11] — Remoção do event handler no next/image e dos ícones nativos do lucide-react no Footer
+**Contexto:** ao refatorar o `<Footer />` (Server Component estático), inseri um evento `onError` na tag de imagem da logo para lidar com fallbacks e utilizei ícones de marca (`Youtube`, `Instagram`, `Facebook`) nativos do `lucide-react`. Ao rodar o build, o Next.js falhou em pré-renderizar a home (`Element type is invalid...`) e a página Sobre (`Event handlers cannot be passed to Client Component props`).
+**Decisão:** (a) Remover o `onError` da logo (o next/image não suporta handlers em Server Components); (b) Reverter o uso de `lucide-react` para os ícones de mídias sociais no Footer, invocando novamente o componente `<SocialLinks />`, que mapeia de forma robusta e usa os SVGs inline da própria biblioteca do projeto (decisão já registrada ontem).
+**Alternativas descartadas:** Mudar o Footer para "use client" (perda grave de performance SEO global só por causa de um icone e um evento de erro).
+**Impacto:** Manteve-se a solidez SSR do Footer. Reitera a importância de não usar events como `onClick`/`onError` em componentes SSR e reforça a proibição do uso direto de redes sociais pelo Lucide.
+
+## [2026-08-12] Remoção do Sanity CMS
+- **Contexto:** O cliente decidiu que não utilizará mais o Sanity CMS. O site terá um painel próprio para gerenciar Projetos, Blog e Linhas de Atração.
+- **Decisão:** Sanity CMS removido do escopo. O projeto utilizará um painel customizado. As rotas dinâmicas serão desenvolvidas com mocks estruturados para integração posterior pelo time de back-end.
