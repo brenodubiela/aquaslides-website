@@ -38,6 +38,9 @@
 - SEO: h1 e subtítulos das seções validados estaticamente via curl.
 - `npm run lint`: **passa**.
 - `git status`: o desenvolvedor consolidou e fez commit (feat: construcao da pg inicial).
+- **Deploy na Vercel desbloqueado:** `frontend/.npmrc` com `legacy-peer-deps=true` resolve o
+  `ERESOLVE` entre React 19 e `react-simple-maps@3`. Instalação limpa validada com `npm ci`
+  (347 pacotes, exit 0). ⚠️ O `.npmrc` **precisa ir no commit** — sem ele a Vercel quebra de novo.
 
 ## Bloqueios (dependem do cliente ou de mim)
 - **Licença de webfont do Riope** (Envato): bloqueio de deploy.

@@ -301,3 +301,26 @@ quebraria silenciosamente a qualquer mudança no logo ou no padding.
 ## [2026-08-12] Remoção do Sanity CMS
 - **Contexto:** O cliente decidiu que não utilizará mais o Sanity CMS. O site terá um painel próprio para gerenciar Projetos, Blog e Linhas de Atração.
 - **Decisão:** Sanity CMS removido do escopo. O projeto utilizará um painel customizado. As rotas dinâmicas serão desenvolvidas com mocks estruturados para integração posterior pelo time de back-end.
+
+---
+
+### [2026-08-12] — `legacy-peer-deps=true` no `frontend/.npmrc` (desbloqueio do deploy na Vercel)
+**Contexto:** o deploy na Vercel falhava na instalação. Reproduzido localmente com `npm install`
+sem flags: `ERESOLVE` — `react-simple-maps@3.0.0` declara `peer react@"^16.8.0 || 17.x || 18.x"`
+e o projeto roda `react@19.1.0` (exigência do Next 15). A biblioteca **não** é descartável: além do
+Sandbox, o `<ProjectMap />` é usado em `src/components/sections/projetos-mapa.jsx`, que entra na
+rota de produção `/projetos`. Por isso foi mantida, não removida.
+**Decisão:** criar `frontend/.npmrc` com `legacy-peer-deps=true`. O arquivo fica **versionado**
+(conferido com `git check-ignore`) — se não subir para o repositório, a Vercel não o lê e o deploy
+volta a quebrar.
+**Alternativas descartadas:** remover `react-simple-maps` (quebraria o mapa de projetos em
+produção); passar `--legacy-peer-deps` no *Install Command* da Vercel (a configuração viveria no
+painel, invisível para quem clona o repo, e o `npm install` local continuaria falhando).
+**Impacto e risco assumido:** a flag desliga a checagem de peer dependencies **do projeto inteiro**,
+não só dessa lib — uma incompatibilidade real futura passa a instalar em silêncio. A alternativa
+cirúrgica, se um dia incomodar, é trocar a flag por `overrides` no `package.json` mirando só o
+`react-simple-maps`. Continua valendo o registro anterior: `react-simple-maps@3` não tem suporte
+oficial a React 19; a saída definitiva é substituí-lo por SVG próprio.
+**Verificação:** instalação limpa (só `package.json` + `package-lock.json` + `.npmrc`, sem
+`node_modules`) → `npm ci` com `added 347 packages`, exit 0. O mesmo diretório **sem** o `.npmrc` →
+`ERESOLVE`. `npm run build` compila 24/24 páginas, com `/projetos` estática.
